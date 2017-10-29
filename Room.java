@@ -6,12 +6,12 @@ public class Room {
     private String Properties;
     private String Note;
     public int visited = 0;
-    public Room() {
+    /*public Room() {
         IdRoom = "";
         Capacity = 0;
         Properties = "";
         Note = "";
-    }
+    }*/
 
     public String getNote() {
         return Note;

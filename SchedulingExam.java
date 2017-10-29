@@ -9,35 +9,25 @@ public class SchedulingExam {
            if(cs.Group.length == 1){
                int AmountOfSt = cs.Group[0].size();
                PrRoom.greedyRoom(AmountOfSt,Class, cs);
-           }else {
+           }else if(cs.Group.length > 1) {
                 int i = 0;
                 while(i < cs.Group.length){
                     int AmountOfSt = cs.Group[i].size();
                     Room BestRoom = PrRoom.searchRoom(Class,AmountOfSt);
-                    if(BestRoom == null)
-                        BestRoom = PrRoom.SearchRoom(Class,AmountOfSt,cs);
-                    cs.addRoom(BestRoom);
+                    if(BestRoom == null) {
+                        System.out.println("-_-");
+                        BestRoom = PrRoom.SearchRoomI(Class, AmountOfSt, cs);
+                    }
+                    if (BestRoom != null)
+                        cs.addRoom(BestRoom);
                     i++;
                 }
            }
+            PrRoom.resetRoom(Class,1);
         }
     }
 
 
-    public void resetRoom(Room[] r, int flag) {
-        if (flag == 1) {
-            int i = 0;
-            while (i < r.length) {
-                if ("LT".equals(r[i].getProperties())) {
-                    r[i].visited = 1;
-                }
-            }
-        } else {
-            int i = 0;
-            while (i < r.length) {
-                r[i].visited = 1;
-            }
-        }
-    }
+
 
 }

@@ -10,7 +10,7 @@ public class Course {
     public LinkedList<String> NeighborVertex;
     public LinkedList<Students> ListStudent;
     public int visited;
-    private int NumberOfGroup = 0;
+    public int NumberOfGroup = 0;
     public int NumberOfTeam = 0;
     private List<String> ListNumberOfGroup;
     public LinkedList<String>[] Group;
@@ -124,6 +124,8 @@ public class Course {
     }
 
     public void addRoom(Room r) {
+        /*if(r == null)
+            return;*/
         ListRoom.add(r);
     }
 

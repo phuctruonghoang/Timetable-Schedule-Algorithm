@@ -120,14 +120,16 @@ public class Processfile {
 
         Pair<Integer, String>[] pr = new Pair[HashCourse.HashMapCourse.size()];
         pr = graph.matchWeight2Course(ListWeight, HashCourse);
-      /*  for (int i = 0; i < pr.length; i++) {
+        /*for (int i = 0; i < pr.length; i++) {
             System.out.println(pr[i].getKey() + "--" + pr[i].getValue());
         }*/
         loadGroupAndTeam();
-        List<String>[] list = HashCourse.HashMapCourse.get("501042").Team;
-        /*for(int i = 0; i < list.length;i++){
+        /*List<String>[] list = HashCourse.HashMapCourse.get("503019").Team;
+        for(int i = 0; i < list.length;i++){
             System.out.println(list[i]);
-        }*/
+        }
+        System.out.println(HashCourse.HashMapCourse.containsKey("503019"));*/
+        System.out.println(HashCourse.HashMapCourse.get("503019").Group.length);
 
     }
 
@@ -198,6 +200,12 @@ public class Processfile {
         ProcessRoom = new ProcessRoom(ListRoom);
         Room = ProcessRoom.Room;
         graph.GraphScheduling(HashCourse,ProcessRoom,Room);
+        for (String tmp : HashCourse.HashMapCourse.keySet()) {
+            Course cs = HashCourse.HashMapCourse.get(tmp);
+            for(int i = 0; i < cs.ListRoom.size();i++){
+                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i));
+            }
+        }
     }
 
 

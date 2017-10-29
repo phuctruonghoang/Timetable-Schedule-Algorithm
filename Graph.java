@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Graph {
-    private SchedulingExam Schedule;
+    private SchedulingExam Schedule = new SchedulingExam();
 
     public void setWeight(HashMapIdStudent HashStudent, HashMapCourse HashCourse) {
         for (String tmp : HashStudent.HashMapIdStudent.keySet()) {
