@@ -125,9 +125,9 @@ public class Processfile {
         }*/
         loadGroupAndTeam();
         List<String>[] list = HashCourse.HashMapCourse.get("501042").Team;
-        for(int i = 0; i < list.length;i++){
+        /*for(int i = 0; i < list.length;i++){
             System.out.println(list[i]);
-        }
+        }*/
 
     }
 
@@ -197,7 +197,7 @@ public class Processfile {
         }
         ProcessRoom = new ProcessRoom(ListRoom);
         Room = ProcessRoom.Room;
-
+        graph.GraphScheduling(HashCourse,ProcessRoom,Room);
     }
 
 

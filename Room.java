@@ -5,7 +5,7 @@ public class Room {
     private int Capacity;
     private String Properties;
     private String Note;
-
+    public int visited = 0;
     public Room() {
         IdRoom = "";
         Capacity = 0;
@@ -17,9 +17,6 @@ public class Room {
         return Note;
     }
 
-    public void setNote(String note) {
-        Note = note;
-    }
 
     public Room(String IdRoom, int Capacity, String Properties, String Note) {
         this.Note = Note;
@@ -33,17 +30,11 @@ public class Room {
         return IdRoom;
     }
 
-    public void setIdRoom(String idRoom) {
-        this.IdRoom = idRoom;
-    }
 
     public int getCapacity() {
         return Capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.Capacity = capacity;
-    }
 
     public String getProperties() {
         return Properties;
@@ -53,5 +44,7 @@ public class Room {
         this.Properties = properties;
     }
 
-
+    public boolean checkVisition(){
+        return visited == 0;
+    }
 }

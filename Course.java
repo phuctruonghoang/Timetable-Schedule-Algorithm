@@ -15,7 +15,8 @@ public class Course {
     private List<String> ListNumberOfGroup;
     public LinkedList<String>[] Group;
     public LinkedList<String>[] Team;
-    private  String tmpTeam = "";
+    private String tmpTeam = "";
+    public List<Room> ListRoom;
 
     public Course() {
         nameCourse = "";
@@ -29,6 +30,7 @@ public class Course {
         ListStudent = new LinkedList<>();
         visited = -1;
         ListNumberOfGroup = new ArrayList<>();
+        ListRoom = new ArrayList<>();
     }
 
     public void addStudent(Students Student) {
@@ -119,6 +121,10 @@ public class Course {
                 i++;
             }
         }
+    }
+
+    public void addRoom(Room r) {
+        ListRoom.add(r);
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Graph {
+    private SchedulingExam Schedule;
 
     public void setWeight(HashMapIdStudent HashStudent, HashMapCourse HashCourse) {
         for (String tmp : HashStudent.HashMapIdStudent.keySet()) {
@@ -57,6 +58,29 @@ public class Graph {
             }
         }
         return res;
+    }
+
+
+    public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room) {
+        List<Room> RoomLab = ExamRoom.groupLab(room);
+        List<Room> RooomClass = ExamRoom.groupClass(room);
+        Room[] Class = converseArray(RooomClass);
+        Room[] Lab = converseArray(RoomLab);
+
+        ExamRoom.bubbleSort(Class);
+        ExamRoom.bubbleSort(Lab);
+        Schedule.scheduleFinalTest(HashCourse, Class, ExamRoom);
+
+    }
+
+    private Room[] converseArray(List<Room> room) {
+        Room[] Room = new Room[room.size()];
+        int i = 0;
+        while (i < room.size()) {
+            Room[i] = room.get(i);
+            i++;
+        }
+        return Room;
     }
 
 
