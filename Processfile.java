@@ -129,7 +129,7 @@ public class Processfile {
             System.out.println(list[i]);
         }
         System.out.println(HashCourse.HashMapCourse.containsKey("503019"));*/
-        System.out.println(HashCourse.HashMapCourse.get("503019").Group.length);
+
 
     }
 
@@ -203,7 +203,7 @@ public class Processfile {
         for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
             for(int i = 0; i < cs.ListRoom.size();i++){
-                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i));
+                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i).getIdRoom());
             }
         }
     }

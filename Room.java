@@ -5,7 +5,7 @@ public class Room {
     private int Capacity;
     private String Properties;
     private String Note;
-    public int visited = 0;
+    public boolean visited = false;
     /*public Room() {
         IdRoom = "";
         Capacity = 0;
@@ -44,7 +44,5 @@ public class Room {
         this.Properties = properties;
     }
 
-    public boolean checkVisition(){
-        return visited == 0;
-    }
+
 }

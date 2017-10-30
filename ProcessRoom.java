@@ -59,10 +59,10 @@ public class ProcessRoom {
         if (AmountOfSt > MaxSize) {
             c.addRoom(room[IndexOfRoom]);
             greedyRoom(AmountOfSt - MaxSize, room, c);
-        } else if (AmountOfSt == MaxSize && room[IndexOfRoom].visited == 0) {
+        } else if (AmountOfSt == MaxSize && room[IndexOfRoom].visited == true) {
             c.addRoom(searchRoom(room, AmountOfSt / 2));
             c.addRoom(searchRoom(room, AmountOfSt / 2 + 1));
-        } else if (AmountOfSt == MaxSize && room[IndexOfRoom].visited != 0) {
+        } else if (AmountOfSt == MaxSize && room[IndexOfRoom].visited == false) {
             c.addRoom(room[IndexOfRoom]);
         } else {
             c.addRoom(searchRoom(room, AmountOfSt));
@@ -72,19 +72,19 @@ public class ProcessRoom {
 
     public Room searchRoom(Room[] r, int Capacity) {
         for (int i = 0; i < r.length; i++) {
-            if (r[i].getCapacity() >= Capacity /*&& r[i].visited != 0*/) { // sai cho visited
-                r[i].visited = 0;
+            if (r[i].getCapacity() >= Capacity && !r[i].visited) { // sai cho visited
+                r[i].visited = true;
                 return r[i];
             }
         }
         return null;
     }
 
-    public Room SearchRoomI(Room[] r, int Capacity, Course c) {
+    public Room SearchRoom(Room[] r, int Capacity, Course c) {
         if (c.Group.length > 1 && c.ListRoom.isEmpty() == false) {
             for (int i = 0; i < r.length; i++) {
-                if (!checkRoom(r[i], c) && r[i].visited != 0 && r[i].getCapacity() >= Capacity) {
-                    r[i].visited = 0;
+                if (!checkRoom(r[i], c) && !r[i].visited && r[i].getCapacity() >= Capacity) {
+                    r[i].visited = true;
                     return r[i];
                 }
             }
@@ -96,8 +96,8 @@ public class ProcessRoom {
         resetRoom(r,flag);
         if (c.Group.length > 1 && c.ListRoom.isEmpty() == false) {
             for (int i = 0; i > r.length; i++) {
-                if (!checkRoom(r[i], c) && r[i].visited != 0 && r[i].getCapacity() >= Capacity) {
-                    r[i].visited = 0;
+                if (!checkRoom(r[i], c) && !r[i].visited && r[i].getCapacity() >= Capacity) {
+                    r[i].visited = true;
                     return r[i];
                 }
             }
@@ -123,14 +123,14 @@ public class ProcessRoom {
             int i = 0;
             while (i < r.length) {
                 if ("LT".equals(r[i].getProperties()) == true) {
-                    r[i].visited = 1;
+                    r[i].visited = false;
                 }
                 i++;
             }
         } else {
             int i = 0;
             while (i < r.length) {
-                r[i].visited = -1;
+                r[i].visited = false;
                 i++;
             }
         }

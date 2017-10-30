@@ -69,7 +69,7 @@ public class Graph {
 
         ExamRoom.bubbleSort(Class);
         ExamRoom.bubbleSort(Lab);
-        Schedule.scheduleFinalTest(HashCourse, Class, ExamRoom);
+        Schedule.scheduleMidTermTest(HashCourse,Class,Lab,ExamRoom);
 
     }
 

@@ -10,8 +10,8 @@ public class Course {
     public LinkedList<String> NeighborVertex;
     public LinkedList<Students> ListStudent;
     public int visited;
-    public int NumberOfGroup = 0;
-    public int NumberOfTeam = 0;
+    private int NumberOfGroup = 0;
+    private int NumberOfTeam = 0;
     private List<String> ListNumberOfGroup;
     public LinkedList<String>[] Group;
     public LinkedList<String>[] Team;
@@ -48,17 +48,11 @@ public class Course {
         return nameCourse;
     }
 
-    public void setNameCourse(String nameCourse) {
-        this.nameCourse = nameCourse;
-    }
 
     public String getIdCourse() {
         return idCourse;
     }
 
-    public void setIdCourse(String idCourse) {
-        this.idCourse = idCourse;
-    }
 
     public void connectVertex(String Vertex) {
         if (NeighborVertex.isEmpty()) {
@@ -124,7 +118,7 @@ public class Course {
     }
 
     public void addRoom(Room r) {
-        /*if(r == null)
+        /*if (r == null)
             return;*/
         ListRoom.add(r);
     }
