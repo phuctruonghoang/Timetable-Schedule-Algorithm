@@ -1,6 +1,8 @@
 package it.tdt.edu.vn;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Students {
     private String idCourse;
@@ -13,6 +15,8 @@ public class Students {
     private String lastName;
     private String email;
     public LinkedList<Course> ListCourse;
+    public List<String> ListRoom;
+    public List<Integer> ListHour;
 
     public Students() {
         this.idCourse = "";
@@ -39,7 +43,9 @@ public class Students {
         this.lastName = lastName;
         this.email = email;
         ListCourse = new LinkedList<>();
-        ListCourse.add(new Course(idCourse,nameCourse));
+        ListCourse.add(new Course(idCourse, nameCourse));
+        ListHour = new ArrayList<>();
+        ListRoom = new ArrayList<>();
     }
 
     public String getIdCourse() {
@@ -50,8 +56,8 @@ public class Students {
         ListCourse.add(Course);
     }
 
-    public void setCourse(String IDCourse){
-        ListCourse.add(new Course(IDCourse,""));
+    public void setCourse(String IDCourse) {
+        ListCourse.add(new Course(IDCourse, ""));
     }
 
     public String getNameCourse() {
@@ -84,5 +90,13 @@ public class Students {
 
     public String getEmail() {
         return email;
+    }
+
+    public void addRoom(String Room) {
+        ListRoom.add(Room);
+    }
+
+    public void addHour(Integer Hour) {
+        ListHour.add(Hour);
     }
 }

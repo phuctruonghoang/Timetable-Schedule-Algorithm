@@ -13,11 +13,11 @@ public class Course {
     private int NumberOfGroup = 0;
     private int NumberOfTeam = 0;
     private List<String> ListNumberOfGroup;
-    public LinkedList<String>[] Group;
-    public LinkedList<String>[] Team;
+    public LinkedList<Students>[] Group;
+    public LinkedList<Students>[] Team;
     private String tmpTeam = "";
     public List<Room> ListRoom;
-
+    private int Hour;
     public Course() {
         nameCourse = "";
         idCourse = "";
@@ -31,6 +31,7 @@ public class Course {
         visited = -1;
         ListNumberOfGroup = new ArrayList<>();
         ListRoom = new ArrayList<>();
+        Hour = -1;
     }
 
     public void addStudent(Students Student) {
@@ -42,6 +43,14 @@ public class Course {
             ListNumberOfGroup.add(Student.getGroup());
         }
         ListStudent.add(Student);
+    }
+
+    public int getHour() {
+        return Hour;
+    }
+
+    public void setHour(int hour) {
+        Hour = hour;
     }
 
     public String getNameCourse() {
@@ -81,15 +90,15 @@ public class Course {
         Group = new LinkedList[NumberOfGroup];
         int count = 0;
         Group[0] = new LinkedList<>();
-        Group[0].add(ListStudent.get(0).getGroup());
+        Group[0].add(ListStudent.get(0));
         int i = 1;
         while (i < ListStudent.size()) {
             if (Group[count].get(0).equals(ListStudent.get(i).getGroup())) {
-                Group[count].add(ListStudent.get(i).getGroup());
+                Group[count].add(ListStudent.get(i));
             } else {
                 count++;
                 Group[count] = new LinkedList<>();
-                Group[count].add(ListStudent.get(i).getGroup());
+                Group[count].add(ListStudent.get(i));
             }
             i++;
         }
@@ -102,15 +111,15 @@ public class Course {
         else {
             int count = 0;
             Team[0] = new LinkedList<>();
-            Team[0].add(ListStudent.get(0).getTeam());
+            Team[0].add(ListStudent.get(0));
             int i = 1;
             while (i < ListStudent.size()) {
                 if (Team[count].get(0).equals(ListStudent.get(i).getTeam())) {
-                    Team[count].add(ListStudent.get(i).getTeam());
+                    Team[count].add(ListStudent.get(i));
                 } else {
                     count++;
                     Team[count] = new LinkedList<>();
-                    Team[count].add(ListStudent.get(i).getTeam());
+                    Team[count].add(ListStudent.get(i));
                 }
                 i++;
             }

@@ -83,11 +83,25 @@ public class Graph {
         return Room;
     }
 
-
+    public void processTimeTable(HashMapCourse HashCourse,HashMapIdStudent HashStudent){
+        for (String tmp : HashCourse.HashMapCourse.keySet()) {
+            Course cs = HashCourse.HashMapCourse.get(tmp);
+            int IndexOfRoom = 0;
+            int count = 0;
+            int i = 0;
+            while(i < cs.Group.length){
+                for(int j = 0; j < cs.Group[i].size();j++){
+                    HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addRoom(cs.ListRoom.get(IndexOfRoom).getIdRoom());
+                    HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addHour(cs.getHour());
+                }
+                i++;
+            }
+        }
+    }
     public static void main(String[] args) throws IOException {
         Processfile pr = new Processfile();
-        pr.readXLSXFileDKMH();
         pr.readXLSXFileDSPT();
+        pr.readXLSXFileDKMH();
         //pr.writeXLSXFile();
     }
 }

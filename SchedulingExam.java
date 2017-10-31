@@ -2,7 +2,7 @@ package it.tdt.edu.vn;
 
 public class SchedulingExam {
 
-
+    // add phong cho thi cuoi ky
     public void scheduleFinalTest(HashMapCourse HashCourse, Room[] Class, ProcessRoom PrRoom) {
         for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
@@ -25,6 +25,7 @@ public class SchedulingExam {
         }
     }
 
+    // add phong cho thi giua ky
     public void scheduleMidTermTest(HashMapCourse HashCourse, Room[] Class, Room[] Lab, ProcessRoom PrRoom) {
         for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
