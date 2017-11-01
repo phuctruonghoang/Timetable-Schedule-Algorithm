@@ -13,9 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class Processfile {
 
@@ -30,6 +28,8 @@ public class Processfile {
     private Students st;
     private ProcessRoom ProcessRoom;
     private Room[] Room;
+    private SchedulingExam Schedule;
+    private ProcessTime PrTime;
 
     public Processfile() {
         ArrSt = new ArrayList<>();
@@ -40,8 +40,9 @@ public class Processfile {
         HashCourse = new HashMapCourse();
         HashStudent = new HashMapStudent();
         HashIdStudent = new HashMapIdStudent();
+        Schedule = new SchedulingExam();
         graph = new Graph();
-
+        PrTime = new ProcessTime();
     }
 
     public void readXLSXFileDKMH() throws IOException {
@@ -112,24 +113,28 @@ public class Processfile {
 
             }
         }
-
         graph.setWeight(HashIdStudent, HashCourse);
         // Hash map dung de lu tru sv tuong ung vs khoa hoc
         addStu2Course(ListCs, ArrSt);
         List<Integer> ListWeight = graph.arrangeWeight(HashCourse);
-
         Pair<Integer, String>[] pr = new Pair[HashCourse.HashMapCourse.size()];
         pr = graph.matchWeight2Course(ListWeight, HashCourse);
         /*for (int i = 0; i < pr.length; i++) {
             System.out.println(pr[i].getKey() + "--" + pr[i].getValue());
         }*/
+        ProcessRoom = new ProcessRoom(ListRoom);
+        Room = ProcessRoom.Room;
         loadGroupAndTeam();
-        /*List<String>[] list = HashCourse.HashMapCourse.get("503019").Team;
-        for(int i = 0; i < list.length;i++){
-            System.out.println(list[i]);
-        }
-        System.out.println(HashCourse.HashMapCourse.containsKey("503019"));*/
-
+        Schedule.loadData(pr,0,HashCourse);
+        graph.buildConnection(false,HashCourse,PrTime,Schedule);
+        graph.GraphScheduling(HashCourse,ProcessRoom,Room,Schedule);
+        graph.processTimeTable(HashCourse,HashIdStudent);
+        /*for (String tmp : HashCourse.HashMapCourse.keySet()) {
+            Course cs = HashCourse.HashMapCourse.get(tmp);
+            for(int i = 0; i < cs.ListRoom.size();i++){
+                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i).getIdRoom());
+            }
+        }*/
 
     }
 
@@ -145,16 +150,10 @@ public class Processfile {
     }
 
     private void loadGroupAndTeam(){
-        /*for (String tmp : HashCourse.HashMapCourse.keySet()) {
+        for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
             cs.addGroup();
             cs.addTeam();
-        }*/
-        Iterator<Map.Entry<String,Course>> iterator = HashCourse.HashMapCourse.entrySet().iterator();
-        while(iterator.hasNext()){
-            Course course = iterator.next().getValue();
-            course.addGroup();
-            course.addTeam();
         }
     }
 
@@ -195,15 +194,6 @@ public class Processfile {
 
                 Room r = new Room(IdRoom, Capacity, Properties, Note);
                 ListRoom.add(r);
-            }
-        }
-        ProcessRoom = new ProcessRoom(ListRoom);
-        Room = ProcessRoom.Room;
-        graph.GraphScheduling(HashCourse,ProcessRoom,Room);
-        for (String tmp : HashCourse.HashMapCourse.keySet()) {
-            Course cs = HashCourse.HashMapCourse.get(tmp);
-            for(int i = 0; i < cs.ListRoom.size();i++){
-                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i).getIdRoom());
             }
         }
     }

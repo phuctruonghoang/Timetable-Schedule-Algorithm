@@ -17,7 +17,9 @@ public class Course {
     public LinkedList<Students>[] Team;
     private String tmpTeam = "";
     public List<Room> ListRoom;
-    private int Hour;
+    private int Hour = -1;
+    public boolean inDead;
+    public boolean Choose;
     public Course() {
         nameCourse = "";
         idCourse = "";
@@ -31,7 +33,8 @@ public class Course {
         visited = -1;
         ListNumberOfGroup = new ArrayList<>();
         ListRoom = new ArrayList<>();
-        Hour = -1;
+        inDead = false;
+        Choose = false;
     }
 
     public void addStudent(Students Student) {
@@ -46,11 +49,11 @@ public class Course {
     }
 
     public int getHour() {
-        return Hour;
+        return this.Hour;
     }
 
     public void setHour(int hour) {
-        Hour = hour;
+        this.Hour = hour;
     }
 
     public String getNameCourse() {
@@ -93,7 +96,7 @@ public class Course {
         Group[0].add(ListStudent.get(0));
         int i = 1;
         while (i < ListStudent.size()) {
-            if (Group[count].get(0).equals(ListStudent.get(i).getGroup())) {
+            if (Group[count].get(0).getGroup().equals(ListStudent.get(i).getGroup())) {
                 Group[count].add(ListStudent.get(i));
             } else {
                 count++;
@@ -114,7 +117,7 @@ public class Course {
             Team[0].add(ListStudent.get(0));
             int i = 1;
             while (i < ListStudent.size()) {
-                if (Team[count].get(0).equals(ListStudent.get(i).getTeam())) {
+                if (Team[count].get(0).getTeam().equals(ListStudent.get(i).getTeam())) {
                     Team[count].add(ListStudent.get(i));
                 } else {
                     count++;

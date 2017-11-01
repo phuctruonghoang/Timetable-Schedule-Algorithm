@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Graph {
-    private SchedulingExam Schedule = new SchedulingExam();
+    private List<String> BestSolution;
 
     public void setWeight(HashMapIdStudent HashStudent, HashMapCourse HashCourse) {
         for (String tmp : HashStudent.HashMapIdStudent.keySet()) {
@@ -60,8 +60,38 @@ public class Graph {
         return res;
     }
 
+    public void buildConnection(boolean flag, HashMapCourse HashCourse, ProcessTime PrTime, SchedulingExam Schedule) {
+        BestSolution = Schedule.BestSolution;
+        if (!flag) {
+            int Hour = 0;
+            int i = 0;
+            while (i < BestSolution.size()) {
+                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(Hour);
+                Hour++;
+                if (Hour >= PrTime.MidTermTest.length) {
+                    Hour = 0;
+                }
+                i++;
+            }
+        } else {
+            int Hour = 0;
+            int i = 0;
+            while (i < BestSolution.size()) {
+                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(Hour);
+                Hour++;
+                if (Hour >= PrTime.FinalTest.length) {
+                    Hour = 0;
+                }
+                i++;
+            }
+        }
+    }
 
-    public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room) {
+    private void TimeTable(Course course, int hour) {
+        course.setHour(hour);
+    }
+
+    public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room, SchedulingExam Schedule) {
         List<Room> RoomLab = ExamRoom.groupLab(room);
         List<Room> RooomClass = ExamRoom.groupClass(room);
         Room[] Class = converseArray(RooomClass);
@@ -83,25 +113,35 @@ public class Graph {
         return Room;
     }
 
-    public void processTimeTable(HashMapCourse HashCourse,HashMapIdStudent HashStudent){
+    public void processTimeTable(HashMapCourse HashCourse, HashMapIdStudent HashStudent) {
         for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
             int IndexOfRoom = 0;
             int count = 0;
             int i = 0;
-            while(i < cs.Group.length){
-                for(int j = 0; j < cs.Group[i].size();j++){
+
+            while (i < cs.Group.length) {
+                for (int j = 0; j < cs.Group[i].size(); j++) {
                     HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addRoom(cs.ListRoom.get(IndexOfRoom).getIdRoom());
                     HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addHour(cs.getHour());
+                    count++;
                 }
+                if(count >= cs.ListRoom.get(IndexOfRoom).getCapacity()){
+                    IndexOfRoom++;
+                    count = 0;
+                }
+                System.out.println(cs.nameCourse+"-"+cs.getIdCourse()+"+++"+cs.Group.length + " -- " +cs.ListRoom.size() +"***" +cs.getHour());
                 i++;
             }
         }
     }
+
     public static void main(String[] args) throws IOException {
         Processfile pr = new Processfile();
         pr.readXLSXFileDSPT();
         pr.readXLSXFileDKMH();
+
+
         //pr.writeXLSXFile();
     }
 }
