@@ -4,6 +4,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,11 +88,8 @@ public class Graph {
         }
     }
 
-    private void TimeTable(Course course, int hour) {
-        course.setHour(hour);
-    }
-
-    public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room, SchedulingExam Schedule) {
+    public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room, SchedulingExam Schedule, ProcessTime Prtime, boolean flag) {
+        buildConnection(flag, HashCourse, Prtime, Schedule);
         List<Room> RoomLab = ExamRoom.groupLab(room);
         List<Room> RooomClass = ExamRoom.groupClass(room);
         Room[] Class = converseArray(RooomClass);
@@ -99,7 +97,12 @@ public class Graph {
 
         ExamRoom.bubbleSort(Class);
         ExamRoom.bubbleSort(Lab);
-        Schedule.scheduleMidTermTest(HashCourse,Class,Lab,ExamRoom);
+        if (flag == true) {
+            Schedule.scheduleFinalTest(HashCourse, Class, ExamRoom);
+        } else {
+            Schedule.scheduleMidTermTest(HashCourse, Class, Lab, ExamRoom);
+        }
+
 
     }
 
@@ -120,28 +123,23 @@ public class Graph {
             int count = 0;
             int i = 0;
 
-            while (i < cs.Group.length) {
-                for (int j = 0; j < cs.Group[i].size(); j++) {
-                    HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addRoom(cs.ListRoom.get(IndexOfRoom).getIdRoom());
-                    HashStudent.HashMapIdStudent.get(cs.Group[i].get(j).getId()).addHour(cs.getHour());
-                    count++;
+            while (i < cs.ListStudent.size()) {
+                if (IndexOfRoom == cs.ListRoom.size()) {
+                    IndexOfRoom = 0;
                 }
-                if(count >= cs.ListRoom.get(IndexOfRoom).getCapacity()){
-                    IndexOfRoom++;
+                HashStudent.HashMapIdStudent.get(cs.ListStudent.get(i).getId()).addHour(cs.getHour());
+                HashStudent.HashMapIdStudent.get(cs.ListStudent.get(i).getId()).addRoom(cs.nameCourse, cs.ListRoom.get(IndexOfRoom).getIdRoom());
+
+                if (count == cs.ListRoom.get(IndexOfRoom).getCapacity()) {
                     count = 0;
+                    IndexOfRoom++;
                 }
-                System.out.println(cs.nameCourse+"-"+cs.getIdCourse()+"+++"+cs.Group.length + " -- " +cs.ListRoom.size() +"***" +cs.getHour());
                 i++;
             }
         }
     }
 
     public static void main(String[] args) throws IOException {
-        Processfile pr = new Processfile();
-        pr.readXLSXFileDSPT();
-        pr.readXLSXFileDKMH();
-
-
-        //pr.writeXLSXFile();
+        List<Processfile> exe = Arrays.asList(new Processfile(true),new Processfile(false));
     }
 }

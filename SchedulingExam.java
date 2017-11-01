@@ -64,9 +64,9 @@ public class SchedulingExam {
                 while (i < cs.Team.length) {
                     int AmountOfStudent = cs.Team[i].size();
                     if (AmountOfStudent >= max) {
-                        Room FisrtRoom = PrRoom.searchRoom(Class, AmountOfStudent / 2);
+                        Room FisrtRoom = PrRoom.searchRoom(Lab, AmountOfStudent / 2);
                         cs.addRoom(FisrtRoom);
-                        Room SecondRoom = PrRoom.searchRoom(Class, AmountOfStudent - AmountOfStudent / 2);
+                        Room SecondRoom = PrRoom.searchRoom(Lab, AmountOfStudent - AmountOfStudent / 2);
                         cs.addRoom(SecondRoom);
                     }
                     Room BestRoom = PrRoom.searchRoom(Lab, AmountOfStudent);

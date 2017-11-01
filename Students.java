@@ -1,6 +1,7 @@
 package it.tdt.edu.vn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class Students {
     private String lastName;
     private String email;
     public LinkedList<Course> ListCourse;
-    public List<String> ListRoom;
     public List<Integer> ListHour;
+    public HashMap<String, String> TableRoom;
 
     public Students() {
         this.idCourse = "";
@@ -45,7 +46,7 @@ public class Students {
         ListCourse = new LinkedList<>();
         ListCourse.add(new Course(idCourse, nameCourse));
         ListHour = new ArrayList<>();
-        ListRoom = new ArrayList<>();
+        TableRoom = new HashMap<>();
     }
 
     public String getIdCourse() {
@@ -92,8 +93,8 @@ public class Students {
         return email;
     }
 
-    public void addRoom(String Room) {
-        ListRoom.add(Room);
+    public void addRoom(String nameCourse, String Room) {
+        TableRoom.put(nameCourse,Room);
     }
 
     public void addHour(Integer Hour) {

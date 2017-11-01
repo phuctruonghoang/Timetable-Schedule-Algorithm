@@ -31,7 +31,7 @@ public class Processfile {
     private SchedulingExam Schedule;
     private ProcessTime PrTime;
 
-    public Processfile() {
+    public Processfile(boolean flag) throws IOException {
         ArrSt = new ArrayList<>();
         ListRoom = new ArrayList<>();
         ListCs = new ArrayList<>();
@@ -43,6 +43,7 @@ public class Processfile {
         Schedule = new SchedulingExam();
         graph = new Graph();
         PrTime = new ProcessTime();
+        writeXLSXFile(flag);
     }
 
     public void readXLSXFileDKMH() throws IOException {
@@ -119,22 +120,12 @@ public class Processfile {
         List<Integer> ListWeight = graph.arrangeWeight(HashCourse);
         Pair<Integer, String>[] pr = new Pair[HashCourse.HashMapCourse.size()];
         pr = graph.matchWeight2Course(ListWeight, HashCourse);
-        /*for (int i = 0; i < pr.length; i++) {
-            System.out.println(pr[i].getKey() + "--" + pr[i].getValue());
-        }*/
         ProcessRoom = new ProcessRoom(ListRoom);
         Room = ProcessRoom.Room;
         loadGroupAndTeam();
-        Schedule.loadData(pr,0,HashCourse);
-        graph.buildConnection(false,HashCourse,PrTime,Schedule);
-        graph.GraphScheduling(HashCourse,ProcessRoom,Room,Schedule);
-        graph.processTimeTable(HashCourse,HashIdStudent);
-        /*for (String tmp : HashCourse.HashMapCourse.keySet()) {
-            Course cs = HashCourse.HashMapCourse.get(tmp);
-            for(int i = 0; i < cs.ListRoom.size();i++){
-                System.out.println(cs.nameCourse + "------" + cs.ListRoom.get(i).getIdRoom());
-            }
-        }*/
+        Schedule.loadData(pr, 0, HashCourse);
+
+
 
     }
 
@@ -149,7 +140,7 @@ public class Processfile {
         }
     }
 
-    private void loadGroupAndTeam(){
+    private void loadGroupAndTeam() {
         for (String tmp : HashCourse.HashMapCourse.keySet()) {
             Course cs = HashCourse.HashMapCourse.get(tmp);
             cs.addGroup();
@@ -199,44 +190,137 @@ public class Processfile {
     }
 
 
-    public void writeXLSXFile() throws IOException {
-        String sheetName = "Sheet1";//name of sheet
+    public void writeXLSXFile(boolean flag) throws IOException {
+        readXLSXFileDSPT();
+        readXLSXFileDKMH();
+        if (flag == true) {
+            graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
+            graph.processTimeTable(HashCourse, HashIdStudent);
+            XSSFWorkbook wb = new XSSFWorkbook();
+            for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
+                Students st = HashIdStudent.HashMapIdStudent.get(tmp);
 
-        XSSFWorkbook wb = new XSSFWorkbook();
-        XSSFSheet sheet = wb.createSheet(sheetName);
+                XSSFSheet sheet = wb.createSheet(st.getId());
 
-        //iterating r number of rows
-        for (int r = 0; r < 50; r++) {
-            XSSFRow row = sheet.createRow(r);
-            if (r == 0) {
-                for (int c = 0; c < 5; c++) {
-                    XSSFCell cell = row.createCell(c);
-                    if (c == 0) {
-                        cell.setCellValue("Họ và tên");
+                String[] timeTable = new String[7];
+                for (int i = 0; i < 7; i++) {
+                    timeTable[i] = "";
+                }
+                for (int i = 0; i < st.TableRoom.size(); i++) {
+                    int timeSlot = st.ListHour.get(i) / 7 + 1;
+                    timeTable[st.ListHour.get(i) % 6 + 1] += st.ListCourse.get(i).getNameCourse() + "\r\n" +
+                            st.ListCourse.get(i).getIdCourse() + "\r\n" +
+                            "Ca thi:" + timeSlot + "\r\n" +
+                            "Phong Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+
+                    //iterating r number of rows
+                    for (int r = 0; r < 2; r++) {
+                        XSSFRow row = sheet.createRow(r);
+                        if (r == 0) {
+                            for (int c = 0; c < 7; c++) {
+                                XSSFCell cell = row.createCell(c);
+                                if (c == 0) {
+                                    cell.setCellValue("");
+                                }
+                                if (c == 1) {
+                                    cell.setCellValue("Thứ Hai");
+                                }
+                                if (c == 2) {
+                                    cell.setCellValue("Thứ Ba");
+                                }
+                                if (c == 3) {
+                                    cell.setCellValue("Thứ Tư");
+                                }
+                                if (c == 4) {
+                                    cell.setCellValue("Thứ Năm");
+                                }
+                                if (c == 5) {
+                                    cell.setCellValue("Thứ Sáu");
+                                }
+                                if (c == 6) {
+                                    cell.setCellValue("Thứ Bảy");
+                                }
+                            }
+                        } else {
+                            for (int c = 0; c < 7; c++) {
+                                XSSFCell cell = row.createCell(c);
+                                cell.setCellValue(timeTable[c]);
+                            }
+                        }
+
                     }
-                    if (c == 1) {
-                        cell.setCellValue("MSSV");
-                    }
-                    if (c == 2) {
-                        cell.setCellValue("Môn thi");
-                    }
-                    if (c == 3) {
-                        cell.setCellValue("Phòng thi");
-                    }
-                    if (c == 4) {
-                        cell.setCellValue("Ca thi");
-                    }
+                    FileOutputStream fileOut = new FileOutputStream("Finaltest.xlsx");
+
+                    //write this workbook to an Outputstream.
+                    wb.write(fileOut);
+                    fileOut.flush();
+                    fileOut.close();
                 }
             }
+        } else if(flag == false) {
+            graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
+            graph.processTimeTable(HashCourse, HashIdStudent);
+            XSSFWorkbook wb = new XSSFWorkbook();
+            for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
+                Students st = HashIdStudent.HashMapIdStudent.get(tmp);
 
+                XSSFSheet sheet = wb.createSheet(st.getId());
+
+                String[] timeTable = new String[7];
+                for (int i = 0; i < 7; i++) {
+                    timeTable[i] = "";
+                }
+                for (int i = 0; i < st.TableRoom.size(); i++) {
+                    int timeSlot = st.ListHour.get(i) / 7 + 1;
+                    timeTable[st.ListHour.get(i) % 6 + 1] += st.ListCourse.get(i).getNameCourse() + "\r\n" +
+                            st.ListCourse.get(i).getIdCourse() + "\r\n" +
+                            "Ca thi:" + timeSlot + "\r\n" +
+                            "Phong Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+
+                    //iterating r number of rows
+                    for (int r = 0; r < 2; r++) {
+                        XSSFRow row = sheet.createRow(r);
+                        if (r == 0) {
+                            for (int c = 0; c < 7; c++) {
+                                XSSFCell cell = row.createCell(c);
+                                if (c == 0) {
+                                    cell.setCellValue("");
+                                }
+                                if (c == 1) {
+                                    cell.setCellValue("Thứ Hai");
+                                }
+                                if (c == 2) {
+                                    cell.setCellValue("Thứ Ba");
+                                }
+                                if (c == 3) {
+                                    cell.setCellValue("Thứ Tư");
+                                }
+                                if (c == 4) {
+                                    cell.setCellValue("Thứ Năm");
+                                }
+                                if (c == 5) {
+                                    cell.setCellValue("Thứ Sáu");
+                                }
+                                if (c == 6) {
+                                    cell.setCellValue("Thứ Bảy");
+                                }
+                            }
+                        } else {
+                            for (int c = 0; c < 7; c++) {
+                                XSSFCell cell = row.createCell(c);
+                                cell.setCellValue(timeTable[c]);
+                            }
+                        }
+
+                    }
+                    FileOutputStream fileOut1 = new FileOutputStream("MidTermTest.xlsx");
+
+                    //write this workbook to an Outputstream.
+                    wb.write(fileOut1);
+                    fileOut1.flush();
+                    fileOut1.close();
+                }
+            }
         }
-        FileOutputStream fileOut = new FileOutputStream("uotput.xlsx");
-
-        //write this workbook to an Outputstream.
-        wb.write(fileOut);
-        fileOut.flush();
-        fileOut.close();
     }
-
-
 }
