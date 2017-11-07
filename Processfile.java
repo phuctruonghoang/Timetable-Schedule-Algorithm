@@ -8,10 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class Processfile {
     private SchedulingExam Schedule;
     private ProcessTime PrTime;
 
-    public Processfile(boolean flag) throws IOException {
+    public Processfile(boolean flag,String Folder) throws IOException {
         ArrSt = new ArrayList<>();
         ListRoom = new ArrayList<>();
         ListCs = new ArrayList<>();
@@ -43,7 +40,7 @@ public class Processfile {
         Schedule = new SchedulingExam();
         graph = new Graph();
         PrTime = new ProcessTime();
-        writeXLSXFile(flag);
+        writeXLSXFile(flag,Folder);
     }
 
     public void readXLSXFileDKMH() throws IOException {
@@ -190,17 +187,17 @@ public class Processfile {
     }
 
 
-    public void writeXLSXFile(boolean flag) throws IOException {
+    public void writeXLSXFile(boolean flag,String Folder) throws IOException {
         readXLSXFileDSPT();
         readXLSXFileDKMH();
         if (flag == true) {
             graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
             graph.processTimeTable(HashCourse, HashIdStudent);
-            XSSFWorkbook wb = new XSSFWorkbook();
+
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
                 Students st = HashIdStudent.HashMapIdStudent.get(tmp);
-
-                XSSFSheet sheet = wb.createSheet(st.getId());
+                XSSFWorkbook wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("FinalTest");
 
                 String[] timeTable = new String[7];
                 for (int i = 0; i < 7; i++) {
@@ -211,7 +208,7 @@ public class Processfile {
                     timeTable[st.ListHour.get(i) % 6 + 1] += st.ListCourse.get(i).getNameCourse() + "\r\n" +
                             st.ListCourse.get(i).getIdCourse() + "\r\n" +
                             "Ca thi:" + timeSlot + "\r\n" +
-                            "Phong Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+                            "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse()) + "\r\n";
 
                     //iterating r number of rows
                     for (int r = 0; r < 2; r++) {
@@ -249,7 +246,8 @@ public class Processfile {
                         }
 
                     }
-                    FileOutputStream fileOut = new FileOutputStream("Finaltest.xlsx");
+                    File file = new File(Folder+"/"+st.getId()+".xlsx");
+                    FileOutputStream fileOut = new FileOutputStream(file);
 
                     //write this workbook to an Outputstream.
                     wb.write(fileOut);
@@ -260,11 +258,11 @@ public class Processfile {
         } else if(flag == false) {
             graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
             graph.processTimeTable(HashCourse, HashIdStudent);
-            XSSFWorkbook wb = new XSSFWorkbook();
+
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
                 Students st = HashIdStudent.HashMapIdStudent.get(tmp);
-
-                XSSFSheet sheet = wb.createSheet(st.getId());
+                XSSFWorkbook wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("MidTermTest");
 
                 String[] timeTable = new String[7];
                 for (int i = 0; i < 7; i++) {
@@ -275,7 +273,7 @@ public class Processfile {
                     timeTable[st.ListHour.get(i) % 6 + 1] += st.ListCourse.get(i).getNameCourse() + "\r\n" +
                             st.ListCourse.get(i).getIdCourse() + "\r\n" +
                             "Ca thi:" + timeSlot + "\r\n" +
-                            "Phong Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+                            "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse()) + "\r\n";
 
                     //iterating r number of rows
                     for (int r = 0; r < 2; r++) {
@@ -313,12 +311,13 @@ public class Processfile {
                         }
 
                     }
-                    FileOutputStream fileOut1 = new FileOutputStream("MidTermTest.xlsx");
+                    File file = new File(Folder+"/"+st.getId()+".xlsx");
+                    FileOutputStream fileOut = new FileOutputStream(file);
 
                     //write this workbook to an Outputstream.
-                    wb.write(fileOut1);
-                    fileOut1.flush();
-                    fileOut1.close();
+                    wb.write(fileOut);
+                    fileOut.flush();
+                    fileOut.close();
                 }
             }
         }
