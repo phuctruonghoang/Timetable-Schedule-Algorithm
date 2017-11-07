@@ -22,7 +22,7 @@ public class Processfile {
     private List<String> ListCs;
     private Course cs;
     private HashMapCourse HashCourse;
-    private HashMapIdStudent HashIdStudent;
+    public HashMapIdStudent HashIdStudent;
     private Graph graph;
     private Students st;
     private ProcessRoom ProcessRoom;
@@ -30,6 +30,7 @@ public class Processfile {
     private SchedulingExam Schedule;
     private ProcessTime PrTime;
     private int size = 0;
+    public ArrayList<String[]> ArrResult;
 
     public Processfile(boolean flag) throws IOException {
         ArrSt = new ArrayList<>();
@@ -177,6 +178,9 @@ public class Processfile {
         }
     }
 
+    public List<String[]> addArrResult(){
+        return ArrResult;
+    }
 
     public void writeXLSXFile(boolean flag) throws IOException {
         readXLSXFileDSPT();
@@ -184,12 +188,12 @@ public class Processfile {
         if (flag == true) {
             graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
             graph.processTimeTable(HashCourse, HashIdStudent);
-
-            XSSFWorkbook wb = new XSSFWorkbook();
+            ArrResult = new ArrayList<>();
+           /* XSSFWorkbook wb = new XSSFWorkbook();
             XSSFSheet sheet = wb.createSheet("FinalTest");
             int r = 0;
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
-                Students st = HashIdStudent.HashMapIdStudent.get(tmp);
+                Students st = HashIdStudent.HashMapIdStudent.get(tmp);*/
 
                 String[] timeTable = new String[9];
                 for (int i = 0; i < 9; i++) {
@@ -203,7 +207,7 @@ public class Processfile {
                             "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse()) + "\r\n";
 
                     //iterating r number of rows
-                    XSSFRow row = sheet.createRow(r);
+                   /* XSSFRow row = sheet.createRow(r);
                     if (r == 0) {
                         for (int c = 0; c < 9; c++) {
                             XSSFCell cell = row.createCell(c);
@@ -257,17 +261,18 @@ public class Processfile {
 
                         }
                     }
-                    r++;
+                    r++;*/
 
                     //File file = new File(Folder+"/"+st.getId()+".xlsx");
-                    FileOutputStream fileOut = new FileOutputStream("FinalTest.xlsx");
+                    /*FileOutputStream fileOut = new FileOutputStream("FinalTest.xlsx");
 
 
                     //write this workbook to an Outputstream.
                     wb.write(fileOut);
                     fileOut.flush();
                     fileOut.close();
-                }
+                }*/
+                ArrResult.add(timeTable);
             }
         } else if (flag == false) {
             graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
