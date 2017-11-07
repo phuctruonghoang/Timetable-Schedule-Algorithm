@@ -140,6 +140,11 @@ public class Graph {
     }
 
     public static void main(String[] args) throws IOException {
-        List<Processfile> exe = Arrays.asList(new Processfile(true,"FinalTest"),new Processfile(false,"MidTermTest"));
+        List<Processfile> exe = Arrays.asList(
+                new Processfile(false),
+                new Processfile(true)
+        );
+
+
     }
 }
