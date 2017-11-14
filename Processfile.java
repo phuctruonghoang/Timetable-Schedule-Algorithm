@@ -31,7 +31,7 @@ public class Processfile {
     private int size = 0;
     public ArrayList<String[]> ArrResult;
 
-    public Processfile(boolean flag) throws IOException {
+    public Processfile(boolean flag, String PathDKMH, String PathDSPT) throws IOException {
         ArrSt = new ArrayList<>();
         ListRoom = new ArrayList<>();
         ListCs = new ArrayList<>();
@@ -42,11 +42,11 @@ public class Processfile {
         Schedule = new SchedulingExam();
         graph = new Graph();
         PrTime = new ProcessTime();
-        writeXLSXFile(flag);
+        writeXLSXFile(flag, PathDKMH, PathDSPT);
     }
 
-    public void readXLSXFileDKMH() throws IOException {
-        InputStream ExcelFileToRead = new FileInputStream("KetQuaDangKyMonHoc.xlsx");
+    public void readXLSXFileDKMH(String path) throws IOException {
+        InputStream ExcelFileToRead = new FileInputStream(path);
         XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
 
         XSSFSheet s = wb.getSheetAt(0);
@@ -105,11 +105,11 @@ public class Processfile {
                 cs = new Course(idCourse, nameCourse);
                 st = new Students(idCourse, nameCourse, group, team, class_, id, firstName, lastName, email);
                 HashIdStudent.addStudent2HashMapIdStudent(st, cs);
-                ArrSt.add(st);
+                //ArrSt.add(st);
 
-                if (!ListCs.contains(idCourse)) {
+                /*if (!ListCs.contains(idCourse)) {
                     ListCs.add(idCourse);
-                }
+                }*/
                 HashCourse.addHashMapCourse(cs, st);
 
             }
@@ -134,10 +134,9 @@ public class Processfile {
         }
     }
 
-    public void readXLSXFileDSPT() throws IOException {
-        InputStream ExcelFileToRead = new FileInputStream("DanhSachPhongThi.xlsx");
+    public void readXLSXFileDSPT(String path) throws IOException {
+        InputStream ExcelFileToRead = new FileInputStream(path);
         XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
-
         XSSFSheet s = wb.getSheetAt(0);
         XSSFRow row;
         XSSFCell c;
@@ -179,9 +178,9 @@ public class Processfile {
         return ArrResult;
     }
 
-    public void writeXLSXFile(boolean flag) throws IOException {
-        readXLSXFileDSPT();
-        readXLSXFileDKMH();
+    public void writeXLSXFile(boolean flag, String PathDKMH, String PathDSPT) throws IOException {
+        readXLSXFileDSPT(PathDSPT);
+        readXLSXFileDKMH(PathDKMH);
         if (flag == true) {
             graph.GraphScheduling(HashCourse, ProcessRoom, Room, Schedule, PrTime, flag);
             graph.processTimeTable(HashCourse, HashIdStudent);
@@ -259,7 +258,8 @@ public class Processfile {
                 r++;
             }
             // File file = new File(Folder+"/"+st.getId()+".xlsx");
-            FileOutputStream fileOut = new FileOutputStream("FinalTest.xlsx");
+            String userHomeFolder = System.getProperty("user.home");
+            FileOutputStream fileOut = new FileOutputStream(userHomeFolder + "/" + "Desktop" + "/" + "FinalTest.xlsx");
             //write this workbook to an Outputstream.
             wb.write(fileOut);
             fileOut.flush();
@@ -341,7 +341,8 @@ public class Processfile {
                 r++;
             }
             // File file = new File(Folder+"/"+st.getId()+".xlsx");
-            FileOutputStream fileOut = new FileOutputStream("MidTermTest.xlsx");
+            String userHomeFolder = System.getProperty("user.home");
+            FileOutputStream fileOut = new FileOutputStream(userHomeFolder + "/" + "Desktop" + "/" + "MidTermTest.xlsx");
 
             //write this workbook to an Outputstream.
             wb.write(fileOut);

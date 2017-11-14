@@ -2,9 +2,7 @@ package it.tdt.edu.vn;
 
 import javafx.util.Pair;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -137,11 +135,6 @@ public class Graph {
                 i++;
             }
         }
-    }
- public static void main(String[] args) throws IOException  {
-      List<Processfile> exe = Arrays.asList(
-                new Processfile(false), new Processfile(true)
-        );
     }
 
 }
