@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class Processfile {
@@ -106,17 +107,15 @@ public class Processfile {
                 }
                 cs = new Course(idCourse, nameCourse);
                 st = new Students(idCourse, nameCourse, group, team, class_, id, firstName, lastName, email);
-                //if(!cs.getNameCourse().equals("Đồ án 1") || !cs.getNameCourse().equals("Đồ án 2")){
-                if (!ListCs.contains(cs)) {
-                    ListCs.add(cs);
+                if (!cs.getIdCourse().equals("500002") && !cs.getIdCourse().equals("500003")) {
+                    HashIdStudent.addStudent2HashMapIdStudent(st, cs);
+                    HashCourse.addHashMapCourse(cs, st);
                 }
-                // }
-                HashIdStudent.addStudent2HashMapIdStudent(st, cs);
-                HashCourse.addHashMapCourse(cs, st);
+
 
             }
         }
-        System.out.println(ListCs.size());
+        //System.out.println(ListCs.size());
         graph.setWeight(HashIdStudent, HashCourse);
         // Hash map dung de lu tru sv tuong ung vs khoa hoc
         List<Integer> ListWeight = graph.arrangeWeight(HashCourse);
@@ -177,50 +176,6 @@ public class Processfile {
         }
     }
 
-    enum WEEKDAY {
-        MONDYAY,
-        TUESDAY,
-        WEDNESDAY,
-        THRUSDAY,
-        FRIDAY,
-        SATURDAY,
-        SUNDAY,
-    }
-
-    public WEEKDAY getWeekDay(int day) {
-        switch (day) {
-            case 0:
-                return WEEKDAY.MONDYAY;
-            case 1:
-                return WEEKDAY.TUESDAY;
-            case 2:
-                return WEEKDAY.WEDNESDAY;
-            case 3:
-                return WEEKDAY.THRUSDAY;
-            case 4:
-                return WEEKDAY.FRIDAY;
-            case 5:
-                return WEEKDAY.SATURDAY;
-        }
-        return WEEKDAY.SUNDAY;
-    }
-
-    public String search(String IDStudent) {
-        Students st = HashIdStudent.HashMapIdStudent.get(IDStudent);
-        String search = st.getLastName() + "  MSSV: " + st.getId() + "\n";
-        Iterator<Entry<String, String>> iterator = st.TableRoom.entrySet().iterator();
-        int count = 0;
-        while (iterator.hasNext()) {
-            int hour = st.ListHour.get(count) / 7 + 1;
-            search += st.ListCourse.get(count).getNameCourse() + " Ngay Thi "
-                    + getWeekDay(st.ListHour.get(count) % 6) + " Gio Thi " + hour
-                    + " Course " + iterator.next().getValue() + "\n";
-            count++;
-        }
-        return search;
-
-    }
-
     public void writeXLSXFile(boolean flag, String PathDKMH, String PathDSPT) throws IOException {
         readXLSXFileDSPT(PathDSPT);
         readXLSXFileDKMH(PathDKMH);
@@ -232,19 +187,19 @@ public class Processfile {
             int r = 0;
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
                 Students st = HashIdStudent.HashMapIdStudent.get(tmp);
-                System.out.println(st.getId() + " " + search(st.getId()));
                 String[] timeTable = new String[9];
                 for (int i = 0; i < 9; i++) {
                     timeTable[i] = "";
                 }
-                for (int i = 0; i < st.TableRoom.size(); i++) {
-                    int timeSlot = st.ListHour.get(i) / 7 + 1;
-                    timeTable[st.ListHour.get(i) % 6 + 3] += st.ListCourse.get(i).getNameCourse() + "\r\n"
-                            + st.ListCourse.get(i).getIdCourse() + "\r\n"
-                            + "Ca thi:" + timeSlot + "\r\n"
-                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+                Iterator<Entry<Course, String>> iterator = st.TableRoom.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Course, String> pair = (Map.Entry<Course, String>) iterator.next();
+                    int hour = pair.getKey().getHour() / 7 + 1;
+                    timeTable[pair.getKey().getHour() % 6 + 3] += pair.getKey().getNameCourse() + "\r\n"
+                            + pair.getKey().getIdCourse() + "\r\n"
+                            + "Ca thi:" + hour + "\r\n"
+                            + "Phòng Thi:" + pair.getValue() + "\n";
                 }
-
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);
                 if (r == 0) {
@@ -321,12 +276,14 @@ public class Processfile {
                 for (int i = 0; i < 9; i++) {
                     timeTable[i] = "";
                 }
-                for (int i = 0; i < st.TableRoom.size(); i++) {
-                    int timeSlot = st.ListHour.get(i) / 7 + 1;
-                    timeTable[st.ListHour.get(i) % 6 + 3] += st.ListCourse.get(i).getNameCourse() + "\r\n"
-                            + st.ListCourse.get(i).getIdCourse() + "\r\n"
-                            + "Ca thi:" + timeSlot + "\r\n"
-                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
+                Iterator<Entry<Course, String>> iterator = st.TableRoom.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Course, String> pair = (Map.Entry<Course, String>) iterator.next();
+                    int hour = pair.getKey().getHour() / 7 + 1;
+                    timeTable[pair.getKey().getHour() % 6 + 3] += pair.getKey().getNameCourse() + "\r\n"
+                            + pair.getKey().getIdCourse() + "\r\n"
+                            + "Ca thi:" + hour + "\r\n"
+                            + "Phòng Thi:" + pair.getValue() + "\n";
                 }
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);

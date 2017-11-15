@@ -89,6 +89,10 @@ public class Graph {
 
     public void GraphScheduling(HashMapCourse HashCourse, ProcessRoom ExamRoom, Room[] room, SchedulingExam Schedule, ProcessTime Prtime, boolean flag) {
         buildConnection(flag, HashCourse, Prtime, Schedule);
+        for (String tmp : HashCourse.HashMapCourse.keySet()) {
+            Course cs = HashCourse.HashMapCourse.get(tmp);
+            System.out.println(cs.getIdCourse() + " " + cs.getHour());
+        }
         List<Room> RoomLab = ExamRoom.groupLab(room);
         List<Room> RooomClass = ExamRoom.groupClass(room);
         Room[] Class = converseArray(RooomClass);
@@ -127,7 +131,7 @@ public class Graph {
                     IndexOfRoom = 0;
                 }
                 HashStudent.HashMapIdStudent.get(cs.ListStudent.get(i).getId()).addHour(cs.getHour());
-                HashStudent.HashMapIdStudent.get(cs.ListStudent.get(i).getId()).addRoom(cs.nameCourse, cs.ListRoom.get(IndexOfRoom).getIdRoom());
+                HashStudent.HashMapIdStudent.get(cs.ListStudent.get(i).getId()).addRoom(cs, cs.ListRoom.get(IndexOfRoom).getIdRoom());
 
                 if (count == cs.ListRoom.get(IndexOfRoom).getCapacity()) {
                     count = 0;

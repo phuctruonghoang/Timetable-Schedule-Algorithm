@@ -17,7 +17,7 @@ public class Students {
     private String email;
     public LinkedList<Course> ListCourse;
     public List<Integer> ListHour;
-    public HashMap<String, String> TableRoom;
+    public HashMap<Course, String> TableRoom;
 
     public Students() {
         this.idCourse = "";
@@ -95,8 +95,8 @@ public class Students {
         return email;
     }
 
-    public void addRoom(String nameCourse, String Room) {
-        TableRoom.put(nameCourse,Room);
+    public void addRoom(Course Course, String Room) {
+        TableRoom.put(Course, Room);
     }
 
     public void addHour(Integer Hour) {
