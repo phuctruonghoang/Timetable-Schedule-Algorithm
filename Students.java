@@ -54,7 +54,9 @@ public class Students {
     }
 
     public void addCourse(Course Course) {
-        ListCourse.add(Course);
+        if (!Course.getNameCourse().equals("Đồ án 1") || !Course.getNameCourse().equals("Đồ án 2")) {
+            ListCourse.add(Course);
+        }
     }
 
     public void setCourse(String IDCourse) {

@@ -2,6 +2,7 @@ package it.tdt.edu.vn;
 
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -135,6 +136,12 @@ public class Graph {
                 i++;
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        String PathDKMH = "D:/PTTK Giai Thuat/Assignment_2017_2018/Assignment_2017_2018/KetQuaDangKyMonHoc.xlsx";
+        String PathDSPT = "D:/PTTK Giai Thuat/Assignment_2017_2018/Assignment_2017_2018/DanhSachPhongThi.xlsx";
+        Processfile pr = new Processfile(true, PathDKMH, PathDSPT);
     }
 
 }

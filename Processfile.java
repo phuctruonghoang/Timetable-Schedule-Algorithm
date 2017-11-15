@@ -12,13 +12,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class Processfile {
 
     private ArrayList<Students> ArrSt;
     private List<Room> ListRoom;
-    private List<String> ListCs;
+    private List<Course> ListCs;
     private Course cs;
     private HashMapCourse HashCourse;
     public HashMapIdStudent HashIdStudent;
@@ -104,16 +106,17 @@ public class Processfile {
                 }
                 cs = new Course(idCourse, nameCourse);
                 st = new Students(idCourse, nameCourse, group, team, class_, id, firstName, lastName, email);
+                //if(!cs.getNameCourse().equals("Đồ án 1") || !cs.getNameCourse().equals("Đồ án 2")){
+                if (!ListCs.contains(cs)) {
+                    ListCs.add(cs);
+                }
+                // }
                 HashIdStudent.addStudent2HashMapIdStudent(st, cs);
-                //ArrSt.add(st);
-
-                /*if (!ListCs.contains(idCourse)) {
-                    ListCs.add(idCourse);
-                }*/
                 HashCourse.addHashMapCourse(cs, st);
 
             }
         }
+        System.out.println(ListCs.size());
         graph.setWeight(HashIdStudent, HashCourse);
         // Hash map dung de lu tru sv tuong ung vs khoa hoc
         List<Integer> ListWeight = graph.arrangeWeight(HashCourse);
@@ -174,8 +177,48 @@ public class Processfile {
         }
     }
 
-    public List<String[]> addArrResult() {
-        return ArrResult;
+    enum WEEKDAY {
+        MONDYAY,
+        TUESDAY,
+        WEDNESDAY,
+        THRUSDAY,
+        FRIDAY,
+        SATURDAY,
+        SUNDAY,
+    }
+
+    public WEEKDAY getWeekDay(int day) {
+        switch (day) {
+            case 0:
+                return WEEKDAY.MONDYAY;
+            case 1:
+                return WEEKDAY.TUESDAY;
+            case 2:
+                return WEEKDAY.WEDNESDAY;
+            case 3:
+                return WEEKDAY.THRUSDAY;
+            case 4:
+                return WEEKDAY.FRIDAY;
+            case 5:
+                return WEEKDAY.SATURDAY;
+        }
+        return WEEKDAY.SUNDAY;
+    }
+
+    public String search(String IDStudent) {
+        Students st = HashIdStudent.HashMapIdStudent.get(IDStudent);
+        String search = st.getLastName() + "  MSSV: " + st.getId() + "\n";
+        Iterator<Entry<String, String>> iterator = st.TableRoom.entrySet().iterator();
+        int count = 0;
+        while (iterator.hasNext()) {
+            int hour = st.ListHour.get(count) / 7 + 1;
+            search += st.ListCourse.get(count).getNameCourse() + " Ngay Thi "
+                    + getWeekDay(st.ListHour.get(count) % 6) + " Gio Thi " + hour
+                    + " Course " + iterator.next().getValue() + "\n";
+            count++;
+        }
+        return search;
+
     }
 
     public void writeXLSXFile(boolean flag, String PathDKMH, String PathDSPT) throws IOException {
@@ -189,6 +232,7 @@ public class Processfile {
             int r = 0;
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
                 Students st = HashIdStudent.HashMapIdStudent.get(tmp);
+                System.out.println(st.getId() + " " + search(st.getId()));
                 String[] timeTable = new String[9];
                 for (int i = 0; i < 9; i++) {
                     timeTable[i] = "";
@@ -198,8 +242,9 @@ public class Processfile {
                     timeTable[st.ListHour.get(i) % 6 + 3] += st.ListCourse.get(i).getNameCourse() + "\r\n"
                             + st.ListCourse.get(i).getIdCourse() + "\r\n"
                             + "Ca thi:" + timeSlot + "\r\n"
-                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse()) + "\r\n";
+                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
                 }
+
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);
                 if (r == 0) {
@@ -281,7 +326,7 @@ public class Processfile {
                     timeTable[st.ListHour.get(i) % 6 + 3] += st.ListCourse.get(i).getNameCourse() + "\r\n"
                             + st.ListCourse.get(i).getIdCourse() + "\r\n"
                             + "Ca thi:" + timeSlot + "\r\n"
-                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse()) + "\r\n";
+                            + "Phòng Thi:" + st.TableRoom.get(st.ListCourse.get(i).getNameCourse());
                 }
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);

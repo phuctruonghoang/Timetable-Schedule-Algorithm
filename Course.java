@@ -130,8 +130,8 @@ public class Course {
     }
 
     public void addRoom(Room r) {
-        /*if (r == null)
-            return;*/
+        if (r == null)
+            return;
         ListRoom.add(r);
     }
 
