@@ -6,6 +6,7 @@
 package it.tdt.edu.vn;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *
  * @author HP
  */
 public class scheduling extends javax.swing.JFrame {
@@ -22,11 +24,12 @@ public class scheduling extends javax.swing.JFrame {
      */
     String PathDKMH;
     String PathDSPT;
-
+    DefaultTableModel model;
     public scheduling() {
         PathDKMH = "";
         PathDSPT = "";
         initComponents();
+        model = (DefaultTableModel) jTable1.getModel();
     }
 
     /**
@@ -49,6 +52,8 @@ public class scheduling extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(" Scheduling Exam");
@@ -120,14 +125,26 @@ public class scheduling extends javax.swing.JFrame {
 
         jProgressBar1.setStringPainted(true);
 
+        jTable1.setModel(new DefaultTableModel(
+                new Object[][]{
+
+                },
+                new String[]{
+                        "MSSV", "Họ lót", "Tên", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"
+                }
+        ));
+        jTable1.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                                                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -136,26 +153,28 @@ public class scheduling extends javax.swing.JFrame {
                                                         .addComponent(jButton5)
                                                         .addComponent(jButton1)))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(8, 8, 8)
+                                                .addContainerGap()
                                                 .addComponent(jButton4)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                                                 .addComponent(jButton3)))
                                 .addGap(52, 52, 52)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                                        .addComponent(jTextField1)
                                         .addComponent(jTextField2)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addGap(0, 540, Short.MAX_VALUE)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel4))
                                                 .addGap(28, 28, 28)))
                                 .addContainerGap())
+                        .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,19 +187,19 @@ public class scheduling extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(34, 34, 34))
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(53, 53, 53)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                                .addGap(31, 31, 31)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 310));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1160, 580));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -208,7 +227,6 @@ public class scheduling extends javax.swing.JFrame {
 
         jProgressBar1.setValue(jProgressBar1.getMinimum());
     }
-
     private void jButton5ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         JButton open = new JButton();
@@ -250,6 +268,14 @@ public class scheduling extends javax.swing.JFrame {
                 return;
             }
             Processfile pr = new Processfile(false, PathDKMH, PathDSPT);
+            String userHomeFolder = System.getProperty("user.home");
+            String Path = userHomeFolder + "/" + "Desktop" + "/" + "MidTermTest.xlsx";
+            Path = Path.replace('\\', '/');
+            ReadFile r = new ReadFile(Path);
+            for (TimeTable t : r.ListTimeTable) {
+                model.insertRow(model.getRowCount(), new Object[]{t.getId(), t.getFirstName(), t.getLastName(), t.getThuHai(), t.getThuBa(),
+                        t.getThuTu(), t.getThuNam(), t.getThuSau(), t.getThuBay()});
+            }
             viewBar();
         } catch (IOException ex) {
             Logger.getLogger(scheduling.class.getName()).log(Level.SEVERE, null, ex);
@@ -268,6 +294,14 @@ public class scheduling extends javax.swing.JFrame {
                 return;
             }
             Processfile pr = new Processfile(true, PathDKMH, PathDSPT);
+            String userHomeFolder = System.getProperty("user.home");
+            String Path = userHomeFolder + "/" + "Desktop" + "/" + "MidTermTest.xlsx";
+            Path = Path.replace('\\', '/');
+            ReadFile r = new ReadFile(Path);
+            for (TimeTable t : r.ListTimeTable) {
+                model.insertRow(model.getRowCount(), new Object[]{t.getId(), t.getFirstName(), t.getLastName(), t.getThuHai(), t.getThuBa(),
+                        t.getThuTu(), t.getThuNam(), t.getThuSau(), t.getThuBay()});
+            }
             viewBar();
         } catch (IOException ex) {
             Logger.getLogger(scheduling.class.getName()).log(Level.SEVERE, null, ex);
@@ -323,6 +357,8 @@ public class scheduling extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
