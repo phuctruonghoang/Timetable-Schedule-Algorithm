@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Graph {
     private List<String> BestSolution;
@@ -60,28 +61,45 @@ public class Graph {
         return res;
     }
 
+    private boolean exists(int number, int[] array) {
+        if (number == -1)
+            return true;
+
+        for (int i = 0; i < array.length; i++) {
+            if (number == array[i])
+                return true;
+        }
+        return false;
+    }
     public void buildConnection(boolean flag, HashMapCourse HashCourse, ProcessTime PrTime, SchedulingExam Schedule) {
         BestSolution = Schedule.BestSolution;
         if (!flag) {
-            int Hour = 0;
             int i = 0;
+            List<Integer> listInt = new ArrayList<>();
+            for (int y = 0; y < 70; y++) {
+                listInt.add(y + 1);
+            }
+            Random r = new Random();
+            int Low = 1;
+            int High = 70;
+
             while (i < BestSolution.size()) {
-                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(Hour);
-                Hour++;
-                if (Hour >= PrTime.MidTermTest.length) {
-                    Hour = 0;
-                }
+                int Result = r.nextInt(High - Low) + Low;
+                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(listInt.get(Result));
                 i++;
             }
         } else {
-            int Hour = 0;
             int i = 0;
+            List<Integer> listInt = new ArrayList<>();
+            for (int y = 0; y < 48; y++) {
+                listInt.add(y + 1);
+            }
+            Random r = new Random();
+            int Low = 1;
+            int High = 48;
             while (i < BestSolution.size()) {
-                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(Hour);
-                Hour++;
-                if (Hour >= PrTime.FinalTest.length) {
-                    Hour = 0;
-                }
+                int Result = r.nextInt(High - Low) + Low;
+                HashCourse.HashMapCourse.get(BestSolution.get(i)).setHour(listInt.get(Result));
                 i++;
             }
         }

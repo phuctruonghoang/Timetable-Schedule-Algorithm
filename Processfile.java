@@ -176,6 +176,83 @@ public class Processfile {
         }
     }
 
+    private int getPositionFiNal(int number) {
+        int posiont = 0;
+        if (number >= 1 && number <= 4) {
+            posiont = 3;
+        }
+        if (number >= 5 && number <= 8) {
+            posiont = 4;
+        }
+        if (number >= 9 && number <= 12) {
+            posiont = 5;
+        }
+        if (number >= 13 && number <= 16) {
+            posiont = 6;
+        }
+        if (number >= 17 && number <= 20) {
+            posiont = 7;
+        }
+        if (number >= 21 && number <= 24) {
+            posiont = 8;
+        }
+        if (number >= 25 && number <= 28) {
+            posiont = 3;
+        }
+        if (number >= 29 && number <= 32) {
+            posiont = 4;
+        }
+        if (number >= 33 && number <= 36) {
+            posiont = 5;
+        }
+        if (number >= 37 && number <= 40) {
+            posiont = 6;
+        }
+        if (number >= 41 && number <= 44) {
+            posiont = 7;
+        }
+        if (number >= 45 && number <= 48) {
+            posiont = 8;
+        }
+        return posiont;
+    }
+
+    private int getPositionMidTerm(int number) {
+        int position = 0;
+        if (number >= 1 && number <= 10) {
+            position = 3;
+        }
+        if (number >= 11 && number <= 20) {
+            position = 4;
+        }
+        if (number >= 21 && number <= 30) {
+            position = 5;
+        }
+        if (number >= 31 && number <= 40) {
+            position = 6;
+        }
+        if (number >= 41 && number <= 50) {
+            position = 7;
+        }
+        if (number >= 51 && number <= 60) {
+            position = 8;
+        }
+        if (number >= 61 && number <= 70) {
+            position = 9;
+        }
+        return position;
+    }
+
+    private String getWeek(int number) {
+        String Week = "";
+        if (number >= 1 && number <= 24) {
+            Week = "Tuần 1";
+        } else {
+            Week = "Tuần 2";
+        }
+
+        return Week;
+    }
     public void writeXLSXFile(boolean flag, String PathDKMH, String PathDSPT) throws IOException {
         readXLSXFileDSPT(PathDSPT);
         readXLSXFileDKMH(PathDKMH);
@@ -194,11 +271,14 @@ public class Processfile {
                 Iterator<Entry<Course, String>> iterator = st.TableRoom.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<Course, String> pair = (Map.Entry<Course, String>) iterator.next();
-                    int hour = pair.getKey().getHour() / 7 + 1;
-                    timeTable[pair.getKey().getHour() % 6 + 3] += pair.getKey().getNameCourse() + "\r\n"
-                            + pair.getKey().getIdCourse() + "\r\n"
-                            + "Ca thi:" + hour + "\r\n"
-                            + "Phòng Thi:" + pair.getValue() + "\n";
+                    String Week = getWeek(pair.getKey().getHour());
+                    int hour = pair.getKey().getHour() % 4 + 1;
+                    int position = getPositionFiNal(pair.getKey().getHour());
+                    timeTable[position] += pair.getKey().getNameCourse() + "\n"
+                            + pair.getKey().getIdCourse() + "\n"
+                            + "Ca thi:" + hour + "\n"
+                            + "Phòng Thi:" + pair.getValue() + "\n" + Week + "\n";
+
                 }
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);
@@ -272,23 +352,25 @@ public class Processfile {
             int r = 0;
             for (String tmp : HashIdStudent.HashMapIdStudent.keySet()) {
                 Students st = HashIdStudent.HashMapIdStudent.get(tmp);
-                String[] timeTable = new String[9];
-                for (int i = 0; i < 9; i++) {
+                String[] timeTable = new String[10];
+                for (int i = 0; i < 10; i++) {
                     timeTable[i] = "";
                 }
                 Iterator<Entry<Course, String>> iterator = st.TableRoom.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<Course, String> pair = (Map.Entry<Course, String>) iterator.next();
-                    int hour = pair.getKey().getHour() / 7 + 1;
-                    timeTable[pair.getKey().getHour() % 6 + 3] += pair.getKey().getNameCourse() + "\r\n"
-                            + pair.getKey().getIdCourse() + "\r\n"
-                            + "Ca thi:" + hour + "\r\n"
+                    int hour = pair.getKey().getHour() % 10 + 1;
+                    int position = getPositionMidTerm(pair.getKey().getHour());
+                    timeTable[position] += pair.getKey().getNameCourse() + "\n"
+                            + pair.getKey().getIdCourse() + "\n"
+                            + "Ca thi:" + hour + "\n"
                             + "Phòng Thi:" + pair.getValue() + "\n";
+
                 }
                 //iterating r number of row
                 XSSFRow row = sheet.createRow(r);
                 if (r == 0) {
-                    for (int c = 0; c < 9; c++) {
+                    for (int c = 0; c < 10; c++) {
                         XSSFCell cell = row.createCell(c);
                         if (c == 0) {
                             cell.setCellValue("MSSV");
@@ -317,9 +399,12 @@ public class Processfile {
                         if (c == 8) {
                             cell.setCellValue("Thứ Bảy");
                         }
+                        if (c == 9) {
+                            cell.setCellValue("Chủ nhật");
+                        }
                     }
                 } else {
-                    for (int c = 0; c < 9; c++) {
+                    for (int c = 0; c < 10; c++) {
                         XSSFCell cell;
                         if (c == 0) {
                             cell = row.createCell(c);
