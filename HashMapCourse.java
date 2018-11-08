@@ -49,6 +49,10 @@ public class HashMapCourse {
         System.out.println(count);
     }
 
+    void()
+    {
+        
+    }
 
 
 }
