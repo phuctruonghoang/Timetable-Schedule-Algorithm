@@ -165,6 +165,11 @@ public class Graph {
         String PathDSPT = "D:/PTTK Giai Thuat/Assignment_2017_2018/Assignment_2017_2018/DanhSachPhongThi.xlsx";
         Processfile pr = new Processfile(true, PathDKMH, PathDSPT);
     }
+    
+    void()
+    {
+        String a = "";
+    }
 
 }
 
