@@ -134,5 +134,10 @@ public class Course {
             return;
         ListRoom.add(r);
     }
+    
+    public void()
+    {
+            
+    }
 
 }
